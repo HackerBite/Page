@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web Robusta</title>
+    <style>
+        /* --- RESET BÁSICO Y ESTILOS GLOBALES --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --light-text: #212529;
+            --dark-text: #f8f9fa;
+            --border-color: #dee2e6;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode input,
+        body.dark-mode textarea,
+        body.dark-mode select {
+            background-color: #495057;
+            color: var(--dark-text);
+            border-color: #6c757d;
+        }
+        body.dark-mode input::placeholder,
+        body.dark-mode textarea::placeholder {
+            color: #adb5bd;
+        }
+        body.dark-mode .card {
+            background-color: #495057;
+            border-color: #6c757d;
+        }
+        body.dark-mode .modal-content {
+             background-color: var(--dark-bg);
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 0.8em;
+            color: var(--primary-color);
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #6cb2eb;
+        }
+
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        body.dark-mode a {
+            color: #6cb2eb;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button, .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed) ease;
+            font-size: 1em;
+        }
+        button:hover, .btn:hover {
+            background: #0056b3;
+        }
+        body.dark-mode button, body.dark-mode .btn {
+            background: #0056b3; /* Un poco más claro para dark mode */
+        }
+        body.dark-mode button:hover, body.dark-mode .btn:hover {
+            background: #004085;
+        }
+
+
+        /* --- HEADER Y NAVEGACIÓN --- */
+        .site-header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        body.dark-mode .site-header {
+            background: #222;
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-header .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+        }
+        .site-header .logo a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .main-nav ul li {
+            margin-left: 20px;
+        }
+
+        .main-nav ul li a {
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .main-nav ul li a:hover, .main-nav ul li a.active {
+            background-color: var(--primary-color);
+        }
+
+        .menu-toggle {
+            display: none; /* Oculto por defecto, se muestra en móvil */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .theme-toggle-btn {
+            margin-left: 20px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: var(--primary-color);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        body.dark-mode .hero {
+            background: #0056b3;
+        }
+        .hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 0.5em;
+            color: white;
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 1.5em;
+        }
+
+
+        /* --- MAIN CONTENT --- */
+        main {
+            flex-grow: 1; /* Para que el footer se quede abajo */
+        }
+        .content-section {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        body.dark-mode .content-section {
+            border-bottom: 1px solid #495057;
+        }
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .card img {
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+
+        /* --- FORMULARIO --- */
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .form-message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: none; /* Oculto por defecto */
+        }
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+
+        /* --- FOOTER --- */
+        .site-footer {
+            background: #333;
+            color: #bbb;
+            text-align: center;
+            padding: 20px 0;
+        }
+        body.dark-mode .site-footer {
+            background: #222;
+            color: #888;
+        }
+        .site-footer p {
+            margin: 0;
+        }
+        .social-links a {
+            color: #bbb;
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+        body.dark-mode .social-links a {
+            color: #888;
+        }
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+        body.dark-mode .social-links a:hover {
+            color: #6cb2eb;
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: var(--light-bg);
+            margin: 10% auto; /* 10% from the top and centered */
+            padding: 25px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .close-modal-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .close-modal-btn:hover,
+        .close-modal-btn:focus {
+            color: var(--light-text);
+            body.dark-mode & { color: var(--dark-text); }
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            .site-header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .menu-toggle {
+                display: block; /* Mostrar botón hamburguesa */
+                position: absolute;
+                top: 15px;
+                right: 20px;
+            }
+            .main-nav {
+                width: 100%;
+                margin-top: 15px;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-out;
+            }
+            .main-nav.active {
+                max-height: 300px; /* Altura suficiente para los items */
+            }
+            .main-nav ul {
+                flex-direction: column;
+            }
+            .main-nav ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+            .main-nav ul li a {
+                display: block;
+            }
+            .theme-toggle-btn {
+                position: absolute;
+                top: 15px;
+                right: 60px; /* Espacio para el botón de menú */
+            }
+
+            .hero h1 {
+                font-size: 2.2em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr; /* Una columna en móviles */
+            }
+            .modal-content {
+                width: 90%;
+                margin: 20% auto;
+            }
+        }
+
+        /* --- ANIMACIÓN DE ESCRITURA --- */
+        .typewriter-text {
+            overflow: hidden; /* Asegura que el texto no se revela hasta que la animación lo hace */
+            /* border-right: .15em solid var(--primary-color); /* Simula el cursor de escritura */
+            white-space: nowrap; /* Mantiene el contenido en una sola línea */
+            letter-spacing: .05em; /* Ajuste de espaciado */
+            animation:
+                typing 3.5s steps(30, end) forwards,
+                blink-caret .75s step-end infinite;
+        }
+        body.dark-mode .typewriter-text {
+            border-right-color: #6cb2eb;
+        }
+
+        /* Animación de escritura */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        /* Animación del cursor */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color); }
+        }
+        body.dark-mode @keyframes blink-caret {
+            50% { border-color: #6cb2eb; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo"><a href="#">MiSitio</a></div>
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="Cambiar tema">🌓</button>
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+                    <li><a href="#acerca" class="nav-link">Acerca de</a></li>
+                    <li><a href="#servicios" class="nav-link">Servicios</a></li>
+                    <li><a href="#portafolio" class="nav-link">Portafolio</a></li>
+                    <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h1 id="heroTitle">Tynix</h1>
+            <p>Una demostración de una página robusta y funcional en un solo archivo HTML.</p>
+            <button class="btn" id="openModalBtn">Saber Más</button>
+        </div>
+    </section>
+
+    <main>
+        <section id="acerca" class="content-section">
+            <div class="container">
+                <h2>Acerca de Nosotros</h2>
+                <p>Somos un equipo dedicado a crear soluciones web innovadoras y de alta calidad. Nuestra pasión es transformar ideas en realidad digital, ofreciendo experiencias de usuario excepcionales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="https://via.placeholder.com/600x300.png?text=Imagen+Representativa" alt="Imagen representativa de la sección Acerca de">
+                </div>
+            </div>
+        </section>
+
+        <section id="servicios" class="content-section">
+            <div class="container">
+                <h2>Nuestros Servicios</h2>
+                <div class="grid-container">
+                    <article class="card">
+                        <img src="https://via.placeholder.com/300x200.png?text=Diseño+Web" alt="Servicio de Diseño Web">
+                        <h3>Diseño Web Moderno</h3>
+                        <p>Creamos diseños web atractivos, intuitivos y adaptados a tus necesidades, enfocados en la experiencia del usuario.</p>
+                    </article>
+                    <article class="card">
+                        <img src="https://via.placeholder.com/300x200.png?text=Desarrollo+Frontend" alt="Servicio de Desarrollo Frontend">
+                        <h3>Desarrollo Frontend</h3>
+                        <p>Convertimos diseños en interfaces interactivas y responsivas utilizando las últimas tecnologías HTML, CSS y JavaScript.</p>
+                    </article>
+                    <article class="card">
+                        <img src="https://via.placeholder.com/300x200.png?text=Backend+Robusto" alt="Servicio de Backend">
+                        <h3>Backend Robusto</h3>
+                        <p>Desarrollamos la lógica de servidor y bases de datos seguras y escalables para potenciar tu aplicación web.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="portafolio" class="content-section">
+            <div class="container">
+                <h2>Portafolio</h2>
+                <p>Aquí algunos de nuestros proyectos destacados. Haz clic para ver más detalles (simulación).</p>
+                <div class="grid-container">
+                    <article class="card portfolio-item" data-title="Proyecto Alfa" data-description="Un sistema de gestión de clientes innovador. Lorem ipsum dolor sit amet.">
+                        <img src="https://via.placeholder.com/300x200.png?text=Proyecto+Alfa" alt="Proyecto Alfa">
+                        <h3>Proyecto Alfa</h3>
+                        <p>Sistema de gestión de clientes.</p>
+                    </article>
+                    <article class="card portfolio-item" data-title="Plataforma Beta" data-description="Una plataforma e-commerce con funcionalidades avanzadas de personalización.">
+                        <img src="https://via.placeholder.com/300x200.png?text=Plataforma+Beta" alt="Plataforma Beta">
+                        <h3>Plataforma Beta</h3>
+                        <p>E-commerce personalizable.</p>
+                    </article>
+                    <article class="card portfolio-item" data-title="App Gamma" data-description="Aplicación móvil híbrida para la gestión de tareas colaborativas.">
+                        <img src="https://via.placeholder.com/300x200.png?text=App+Gamma" alt="App Gamma">
+                        <h3>App Gamma</h3>
+                        <p>Aplicación móvil de tareas.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="content-section">
+            <div class="container">
+                <h2>Contacto</h2>
+                <p>¿Tienes alguna pregunta o proyecto en mente? ¡Contáctanos!</p>
+                <form id="contactForm" class="contact-form">
+                    <div class="form-message" id="formMessage"></div>
+                    <div>
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" name="name" required placeholder="Tu nombre completo">
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required placeholder="tu.correo@ejemplo.com">
+                    </div>
+                    <div>
+                        <label for="subject">Asunto:</label>
+                        <input type="text" id="subject" name="subject" placeholder="Asunto del mensaje">
+                    </div>
+                    <div>
+                        <label for="message">Mensaje:</label>
+                        <textarea id="message" name="message" required placeholder="Escribe tu mensaje aquí..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="Facebook">F</a>
+                <a href="#" aria-label="Twitter">T</a>
+                <a href="#" aria-label="LinkedIn">In</a>
+                <a href="#" aria-label="GitHub">Gh</a>
+            </div>
+            <p>© <span id="currentYear"></span> MiSitio Web. Todos los derechos reservados.</p>
+            <p>Diseñado y desarrollado en un solo archivo HTML.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn" id="closeModalBtn">×</span>
+            <h2 id="modalTitle">Información Adicional</h2>
+            <p id="modalText">Este es un modal simple que puede mostrar información detallada. Se activa mediante JavaScript y se puede personalizar fácilmente.</p>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- MANEJO DEL MENÚ RESPONSIVE ---
+            const menuToggle = document.getElementById('menuToggle');
+            const mainNav = document.getElementById('mainNav');
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('active'));
+                });
+            }
+
+            // --- MANEJO DEL TEMA OSCURO/CLARO ---
+            const themeToggle = document.getElementById('themeToggle');
+            const currentTheme = localStorage.getItem('theme');
+
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                if(themeToggle) themeToggle.textContent = '☀️';
+            } else {
+                 if(themeToggle) themeToggle.textContent = '🌓';
+            }
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    let theme = 'light';
+                    if (document.body.classList.contains('dark-mode')) {
+                        theme = 'dark';
+                        themeToggle.textContent = '☀️';
+                    } else {
+                        themeToggle.textContent = '🌓';
+                    }
+                    localStorage.setItem('theme', theme);
+                });
+            }
+
+            // --- SCROLL SUAVE Y ACTIVACIÓN DE LINKS DE NAVEGACIÓN ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // Scroll suave
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70, // Ajustar por altura del header fijo
+                            behavior: 'smooth'
+                        });
+
+                        // Marcar link activo
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Cerrar menú móvil si está abierto
+                        if (mainNav && mainNav.classList.contains('active')) {
+                            mainNav.classList.remove('active');
+                            menuToggle.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                });
+            });
+            
+            // Activar link de nav según scroll (opcional, puede ser pesado en rendimiento)
+            window.addEventListener('scroll', () => {
+                let currentSection = '';
+                document.querySelectorAll('main section[id]').forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) { // 80 para compensar header
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+                // Si no hay sección activa (ej. arriba del todo), activar 'Inicio'
+                if (!currentSection && navLinks.length > 0) {
+                     const homeLink = document.querySelector('.nav-link[href="#inicio"]');
+                     if (homeLink) homeLink.classList.add('active');
+                }
+            });
+
+
+            // --- VALIDACIÓN DEL FORMULARIO DE CONTACTO ---
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('formMessage');
+
+            if (contactForm && formMessage) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    formMessage.style.display = 'none'; // Ocultar mensajes previos
+                    formMessage.className = 'form-message'; // Resetear clases
+
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const message = document.getElementById('message').value.trim();
+                    let errors = [];
+
+                    if (name === '') errors.push('El nombre es obligatorio.');
+                    if (email === '') {
+                        errors.push('El email es obligatorio.');
+                    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+                        errors.push('El formato del email no es válido.');
+                    }
+                    if (message === '') errors.push('El mensaje es obligatorio.');
+
+                    if (errors.length > 0) {
+                        formMessage.textContent = errors.join(' ');
+                        formMessage.classList.add('error');
+                        formMessage.style.display = 'block';
+                    } else {
+                        // Simulación de envío exitoso
+                        formMessage.textContent = '¡Mensaje enviado con éxito! Gracias por contactarnos.';
+                        formMessage.classList.add('success');
+                        formMessage.style.display = 'block';
+                        contactForm.reset(); // Limpiar el formulario
+
+                        // Opcional: Ocultar mensaje después de un tiempo
+                        setTimeout(() => {
+                            formMessage.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            }
+
+            // --- MANEJO DEL MODAL ---
+            const modal = document.getElementById('infoModal');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalTitleElem = document.getElementById('modalTitle');
+            const modalTextElem = document.getElementById('modalText');
+
+            function showModal(title, text) {
+                if (modal && modalTitleElem && modalTextElem) {
+                    modalTitleElem.textContent = title;
+                    modalTextElem.innerHTML = text; // Usar innerHTML para permitir HTML en el texto
+                    modal.style.display = "block";
+                }
+            }
+            
+            if (openModalBtn) {
+                 openModalBtn.addEventListener('click', () => {
+                    showModal(
+                        "Más Sobre Nosotros",
+                        "Esta es una página de demostración creada enteramente en un solo archivo HTML. Incluye HTML semántico, CSS para estilos responsivos y un tema claro/oscuro, y JavaScript para interactividad como este modal, menú de navegación, y validación de formularios.<br><br><strong>Características destacadas:</strong><ul><li>Diseño responsive.</li><li>Tema claro/oscuro persistente.</li><li>Navegación con scroll suave.</li><li>Formulario de contacto con validación.</li><li>Estructura modular simulada con secciones.</li></ul>"
+                    );
+                });
+            }
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    if (modal) modal.style.display = "none";
+                });
+            }
+
+            // Cerrar modal si se hace clic fuera del contenido
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            // Modal para items de portafolio
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            portfolioItems.forEach(item => {
+                item.style.cursor = 'pointer'; // Indicar que es clickeable
+                item.addEventListener('click', () => {
+                    const title = item.dataset.title || "Detalle del Proyecto";
+                    const description = item.dataset.description || "No hay descripción disponible.";
+                    showModal(title, `<p>${description}</p><p><em>Este es un ejemplo de cómo se podría mostrar más información sobre un proyecto.</em></p>`);
+                });
+            });
+
+
+            // --- ACTUALIZAR AÑO EN FOOTER ---
+            const currentYearSpan = document.getElementById('currentYear');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            // --- EFECTO DE ESCRITURA PARA EL TÍTULO DEL HERO ---
+            const heroTitle = document.getElementById('heroTitle');
+            if (heroTitle) {
+                const originalText = heroTitle.textContent;
+                heroTitle.textContent = ''; // Limpiar para la animación
+                heroTitle.classList.add('typewriter-text');
+                
+                // Para que la animación se ejecute cada vez (si se vuelve a cargar la sección)
+                // o para reiniciar si es necesario.
+                // Forzamos el reinicio de la animación para que siempre se vea al cargar.
+                // Necesitamos clonar el elemento para que la animación se reinicie.
+                const newHeroTitle = heroTitle.cloneNode(true);
+                heroTitle.parentNode.replaceChild(newHeroTitle, heroTitle);
+                newHeroTitle.textContent = originalText; // Poner el texto real para que se escriba
+                // Esto es un poco un hack. Una mejor manera sería controlar la animación con JS
+                // si se necesitara reiniciar bajo demanda. Para carga inicial, está bien.
+            }
+
+            // Inicializar el estado activo del primer link de navegación
+             if (navLinks.length > 0) {
+                const firstLink = document.querySelector('.nav-link[href="#inicio"]');
+                if(firstLink) firstLink.classList.add('active');
+            }
+
+
+        });
+    </script>
+
+</body>
+</html>
